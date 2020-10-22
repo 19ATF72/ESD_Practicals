@@ -9,12 +9,12 @@
  * @author rob
  */
 public class Triangle {
-    private double triangleSideA;
-    private double triangleSideB;
-    private double triangleSideC;
+    static int triangleSideA;
+    static int triangleSideB;
+    static int triangleSideC;
     
    
-    public  Triangle(double tringle_side_a, double tringle_side_b, double tringle_side_c)
+    public  Triangle(int tringle_side_a, int tringle_side_b, int tringle_side_c)
     {
         triangleSideA = tringle_side_a;
         triangleSideB = tringle_side_b;
@@ -23,25 +23,26 @@ public class Triangle {
     
     public String getTriangleType()
     {
+        String triangleAnswer; 
+        
         if(triangleSideA == triangleSideB 
                 && triangleSideA == triangleSideC
-                && triangleSideB == triangleSideC
-                && triangleSideB == triangleSideA)
+                && triangleSideB == triangleSideC)
         {
-            return "The triangle is a equilateral";
+            triangleAnswer = "The triangle is a equilateral";
         }
         else if(triangleSideA != triangleSideB 
                 && triangleSideA != triangleSideC
-                && triangleSideB != triangleSideC
-                && triangleSideB != triangleSideA)
+                && triangleSideB != triangleSideC)
         {
-            return "The triangle is a scalene";
+            triangleAnswer = "The triangle is a scalene";
         }
         else
         {
-            return "The triangle is a isosceles";
+            triangleAnswer = "The triangle is a isosceles";
         }
+        
+        return triangleAnswer;
     }
-    
-    
+   
 }

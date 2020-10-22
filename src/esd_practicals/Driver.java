@@ -10,7 +10,7 @@ import java.util.Scanner;
  *
  * @author rob
  */
-public class ESD_Practicals {
+public class Driver {
 
     /*
      * @param args the command line arguments
@@ -21,17 +21,23 @@ public class ESD_Practicals {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Please input the length of trinagle side A: ");
-        double triangleSideA = scanner.nextDouble();
+        int triangleSideA = scanner.nextInt();
         System.out.println("Please input the length of trinagle side B: ");
-        double triangleSideB = scanner.nextDouble();
+        int triangleSideB = scanner.nextInt();
         System.out.println("Please input the length of trinagle side C: ");
-        double triangleSideC = scanner.nextDouble();
+        int triangleSideC = scanner.nextInt();
 
-       Triangle triangle = new Triangle(triangleSideA, triangleSideB, triangleSideC);
+        if(triangleSideA == 0 || triangleSideB == 0 || triangleSideC == 0 )
+        {
+            System.out.println("All sides must have a length.");
+        }
+           
+        Triangle triangle = new Triangle(triangleSideA, triangleSideB, triangleSideC);
 
-       String answer = triangle.getTriangleType();
+        String answer = triangle.getTriangleType();
 
-       System.out.println(answer);
+        System.out.println(answer);
+
     }
 
 }
