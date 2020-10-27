@@ -25,54 +25,70 @@ public class Account
         balance = _balance; 
     }
     
-    public String getBalance()
+    public void getBalance()
     {
-        return "The account balance is " + balance; 
+        System.out.println("The account balance is " + balance);
     }
     
     public void withdrawMoney()
     {
-        while(true)
+
+        System.out.println("Enter an amount you would like to withdraw: ");
+
+        String withdrawAmount = scanner.next();
+
+        Boolean isStringNumeric = isNumeric(withdrawAmount);
+
+        if(isStringNumeric == true)
         {
-            System.out.println("Enter an amount you would like to withdraw: ");
-            double withdrawAmount = scanner.nextDouble();
-            
-            if(withdrawAmount == 0)
-            {   
-                System.out.println("Your withdraw amount is 0 or invalid.");
-                System.out.println("Please try again...");
-            }
-            else
-            {
-                balance = balance - withdrawAmount;
-                
-                System.out.println("Withdrawing $" + withdrawAmount);
-                System.out.println("Your new account balance is: " + balance);
-                break; 
-            }
+            balance = balance - Double.parseDouble(withdrawAmount);
+
+            System.out.println("Withdrawing $" + withdrawAmount);
+            System.out.println("Your new account balance is: " + balance);
         }
+        else
+        {
+            System.out.println("Your withdraw amount is invalid.");
+            System.out.println("Please try again...");
+            withdrawMoney();
+        }
+         
     }
     
     public void depositMoney()
     {
-        while(true)
+        System.out.println("Enter an amount you would like to deposit: ");
+
+        String depositAmount = scanner.next();
+
+        Boolean isStringNumeric = isNumeric(depositAmount);
+
+        if(isStringNumeric == true)
         {
-            System.out.println("Enter an amount you would like to deposit: ");
-            double depositAmount = scanner.nextDouble();
-            
-            if(depositAmount == 0)
-            {   
-                System.out.println("Your deposit amount is 0 or invalid.");
-                System.out.println("Please try again...");
-            }
-            else
-            {
-                balance = balance + depositAmount;
-                
-                System.out.println("Depositing $" + depositAmount);
-                System.out.println("Your new account balance is: " + balance);
-                break; 
-            }
+            balance = balance + Double.parseDouble(depositAmount);
+
+            System.out.println("Deposting $" + depositAmount);
+            System.out.println("Your new account balance is: " + balance);
         }
+        else
+        {
+            System.out.println("Your deposiit amount is invalid.");
+            System.out.println("Please try again...");
+            depositMoney();
+        }
+    }
+    
+    
+    private static boolean isNumeric(String str) 
+    { 
+        try 
+        {  
+            Double.parseDouble(str);  
+            return true;
+        } 
+        catch(NumberFormatException e)
+        {  
+            return false;  
+        }  
     }
 }
