@@ -4,7 +4,12 @@
  * and open the template in the editor.
  */
 package questionthreebankaccount;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -12,21 +17,31 @@ import java.util.Scanner;
  */
 public class Bank 
 {
+    Scanner scanner = new Scanner(System.in);
     private Account[] users = new Account[3];
     private Account currentUser;
-    
-    Scanner scanner = new Scanner(System.in);
-    
-    
+     
     public void populateUsers()
     {
         users[0] = new Account(1000.00, "Rob"); 
         users[1] = new Account(11111.00, "Tom"); 
         users[2] = new Account(2222222.00, "Max"); 
         
+        Date date= new Date();
+        long time = date.getTime();
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
+        
         for (int i = 0; i < users.length; i++)
         {
-             System.out.println(users[i].name);
+             
+            try {
+                String str = "INSERT INTO customer values(name, balance, created, last_accessed)";
+                Jdbc jdbc = new Jdbc(str);
+                jdbc.connect();
+                //jdbc.insertCustomer(users[i].name, users[i].balance, ts, ts);
+            } catch (ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
@@ -83,7 +98,8 @@ public class Bank
             switch(result) 
             {
                 case 1:
-                    currentUser.depositMoney();   
+                    currentUser.depositMoney();
+                    System.out.println(currentUser.balance);
                     break;
                 case 2:
                     currentUser.withdrawMoney();
@@ -100,27 +116,36 @@ public class Bank
 
     private Account getUser(String name)
     {
-        for (int i = 0; i < users.length; i++)
-        {
-            if(name.equals(users[i].name))
-            {
-                return users[i];
-            }
+        try {
+            String str = "SELECT * FROM customer WHERE name=? LIMIT 1";
+            Jdbc jdbc = new Jdbc(str);
+            jdbc.connect();
+            jdbc.retrieveCustomer(name);
             
-        }     
+            for (int i = 0; i < users.length; i++)
+            {
+                if(name.equals(users[i].name))
+               {
+                    return users[i];
+                }
+
+            }     
+               
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
         return null;
     }
     
-   
- 
     public void addInterest()
     {
         for (int i = 0; i < users.length; i++)
         {
             users[i].balance = users[i].balance * 1.03;
+            // Needs to function in Account.java to ensure DB entry only happens in one place.
+            // Same function as depositMoney
         }
     }
-        
-    
     
 }
