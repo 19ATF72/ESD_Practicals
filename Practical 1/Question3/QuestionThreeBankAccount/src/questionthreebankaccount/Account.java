@@ -5,7 +5,11 @@
  */
 package questionthreebankaccount;
 
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -43,9 +47,19 @@ public class Account
         if(isStringNumeric == true)
         {
             balance = balance - Double.parseDouble(withdrawAmount);
+            Timestamp ts = new Timestamp(System.currentTimeMillis());
 
             System.out.println("Withdrawing $" + withdrawAmount);
             System.out.println("Your new account balance is: " + balance);
+            
+            try {
+                String str = "UPDATE customer SET balance = ?, last_accessed = ? WHERE name = ?";
+                Jdbc jdbc = new Jdbc(str);
+                jdbc.connect();
+                jdbc.updateBalance(name, balance, ts);
+            } catch (ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         else
         {
@@ -65,9 +79,19 @@ public class Account
         if(isStringNumeric == true)
         {
             balance = balance + Double.parseDouble(depositAmount);
+            Timestamp ts = new Timestamp(System.currentTimeMillis());
 
             System.out.println("Deposting $" + depositAmount);
             System.out.println("Your new account balance is: " + balance);
+            try {
+                String str = "UPDATE customer SET balance = ?, last_accessed = ? WHERE name = ?";
+                Jdbc jdbc = new Jdbc(str);
+                jdbc.connect();
+                jdbc.updateBalance(name, balance, ts);
+                
+            } catch (ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         else
         {
@@ -78,7 +102,18 @@ public class Account
     
     public void getBalance()
     {
-        System.out.println("The account balance is " + balance);
+        try {
+            String str = "SELECT balance FROM customer WHERE name=?";
+            Jdbc jdbc = new Jdbc(str);
+            jdbc.connect();
+            int bal = jdbc.retrieveBalance(name);
+
+            //System.out.println("The account balance is " + balance);  
+            System.out.println("The account balance on the DB is " + bal);  
+                
+            } catch (ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);
+            }  
     }
      
     private static boolean isNumeric(String str) 
