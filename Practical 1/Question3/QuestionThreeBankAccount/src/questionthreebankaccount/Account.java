@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package questionthreebankaccount;
+
 import java.util.Scanner;
 
 /*
@@ -19,20 +20,15 @@ import java.util.Scanner;
 public class Account 
 {
     
-    private static String name;
-    private double balance;
+    public String name;
+    public double balance;
     
     Scanner scanner = new Scanner(System.in);
-    
+
     public Account(double _balance, String _name)
     {
         name = _name;
         balance = _balance; 
-    }
-    
-    public void getBalance()
-    {
-        System.out.println("The account balance is " + balance);
     }
     
     public void withdrawMoney()
@@ -55,9 +51,7 @@ public class Account
         {
             System.out.println("Your withdraw amount is invalid.");
             System.out.println("Please try again...");
-            withdrawMoney();
         }
-         
     }
     
     public void depositMoney()
@@ -79,11 +73,14 @@ public class Account
         {
             System.out.println("Your deposiit amount is invalid.");
             System.out.println("Please try again...");
-            depositMoney();
         }
     }
     
-    
+    public void getBalance()
+    {
+        System.out.println("The account balance is " + balance);
+    }
+     
     private static boolean isNumeric(String str) 
     { 
         try 
@@ -96,4 +93,5 @@ public class Account
             return false;  
         }  
     }
+    
 }
